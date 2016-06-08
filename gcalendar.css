@@ -1,0 +1,28 @@
+.table-div {
+	display: table;
+	table-layout: fixed;
+	border: 1px solid #ccc;
+}
+
+.tr-div {
+	display: table-row;
+	border: 1px solid #ccc;
+}
+
+.td-div {
+	display: table-cell;
+	border: 1px solid #ccc;
+}
+
+.dayNames {
+	font-size: 0.6em;
+	color: #ccc;
+	line-height: 1.2em;
+	padding: 0px;
+}
+
+.event {
+	font-size: 0.4em;
+	line-height: 1.2em;
+	padding: 2px;
+}
