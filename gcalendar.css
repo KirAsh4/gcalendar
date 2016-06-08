@@ -1,38 +1,13 @@
-.table-div {
-	display: table;
-	table-layout: fixed;
+.weekly-cal-th {
+	font-size: medium;
+	border: 1px solid #444444;
+	width: 14.2%;
 }
 
-.tr-div {
-	display: table-row;
-	border: 1px solid #444;
-}
-
-.td-div {
-	display: table-cell;
-}
-
-.daysRow {
-	border-width: 1px;
-	border-color: #444;
-	border-style: solid;
-}
-
-.eventsRow {
-	border-width: 1px;
-	border-color: #444;
-	border-style: solid;
-}
-
-.dayNames {
-	font-size: 0.6em;
-	color: #aaa;
-	line-height: 1.2em;
-	padding: 0px;
-}
-
-.event {
-	font-size: 0.4em;
-	line-height: 1.2em;
-	padding: 2px;
+.dailyEvents {
+	border: 1px solid #444444;
+	font-size: medium;
+	vertical-align: top;
+	text-align: left;
+	padding: 5px;
 }

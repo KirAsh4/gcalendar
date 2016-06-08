@@ -40,13 +40,8 @@ Module.register("gcalendar",{
 	start: function() {
 		Log.info("Starting module: " + this.name);
 
-		/*
-		// Schedule update timer.
-		var self = this;
-		setInterval(function() {
-			self.updateDom(self.config.fadeSpeed);
-		}, this.config.updateInterval);
-		*/
+		// Set locale
+		moment.locale(config.language);
 
 		for (var c in this.config.calendars) {
 			var calendar = this.config.calendars[c];
@@ -81,68 +76,71 @@ Module.register("gcalendar",{
 
 		var events = this.createEventList();
 		var weeksEvents = [];
-		console.log("Incoming events!");
-		console.dir(events);
+		//console.log("Incoming events!");
+		//console.dir(events);
 
-		var wrapper = document.createElement("div");
-		wrapper.className = 'table-div';
-		wrapper.style.width = '100%';
+		var wrapper = document.createElement("table");
+		wrapper.className = 'xsmall';
+		wrapper.id = 'weekly-cal-table';
 
-		var daysRow = document.createElement("div");
-		daysRow.className = 'tr-div daysRow';
-
-		var dayNameWrapper = document.createElement("div");
-		dayNameWrapper.className ='td-div';
+		var header = document.createElement("tHead");
+		var headerTR = document.createElement("tr");
 
 		for (day = 0; day <= 6; day++) {
-			dayDiv = dayNameWrapper.cloneNode(true);
-			dayDiv.className = 'td-div';
-			var dayName = document.createElement("div");
-			dayName.className = 'dayNames';
-			dayName.innerHTML = moment().add(day, "days").format("ddd");
-			dayDiv.appendChild(dayName);
-			daysRow.appendChild(dayDiv);
+			var headerTH = document.createElement("th");
+			headerTH.className = 'weekly-cal-th';
+			headerTH.scope = 'col';
+			headerTH.innerHTML = moment().add(day, "days").format("ddd");
+			headerTR.appendChild(headerTH);
+			
+			// This initializes the sub-array for this day witin the main weeksEvents[] array.
 			weeksEvents[moment().add(day, "days").weekday()] = [];
 		}
+		header.appendChild(headerTR);
+		wrapper.appendChild(header);
 
-		wrapper.appendChild(daysRow);
-
-		var eventsRow = document.createElement("Div");
-		eventsRow.className = 'tr-div eventsRow';
-		
-		var eventsWrapper = document.createElement("div");
-		eventsWrapper.className = 'td-div eventWrap';
-
-		var eventContent = document.createElement("div");
-		eventContent.className = 'event';
-		
+		// Parse all events into weeksEvents[] array
 		for (var e in events) {
 			var event = events[e];
 			var eventDate = moment(event.startDate, "x").weekday();
 			weeksEvents[eventDate].push(event);
 		}
 
+		var footer = document.createElement('tFoot');
+		var footerTR = document.createElement("tr");
+		footerTR.id = "weekly-cal-tf";
+
+		var footerTD = document.createElement("td");
+		footerTD.colSpan ="7";
+		footerTD.innerHTML = "&nbsp;";
+		
+		footerTR.appendChild(footerTD);
+		footer.appendChild(footerTR);
+		wrapper.appendChild(footer);
+
+		var bodyContent = document.createElement('tBody');
+		var bodyTR = document.createElement("tr");
+		bodyTR.className = 'weekly-events-row';
+
 		for (day = 0; day <= 6; day++) {
 			var dayEvents = weeksEvents[moment().add(day, "days").weekday()];
-			evWrapper = eventsWrapper.cloneNode(true);
+			var bodyTD = document.createElement("td");
+			bodyTD.className = 'dailyEvents';
 			if (dayEvents.length > 0) {
-				//console.log("Events on: " + moment().add(day, "days").format("ddd"));
 				for (var e in dayEvents) {
-					// console.log(this.titleTransform(dayEvents[e].title));
-					evContent = eventContent.cloneNode(true);
-					evContent.innerHTML = this.titleTransform(dayEvents[e].title);
-					evWrapper.appendChild(evContent);
+					bodyTD.innerHTML += this.titleTransform(dayEvents[e].title) + '<br />';
 				}
 			}
-			eventsRow.appendChild(evWrapper);
+			bodyTR.appendChild(bodyTD);
 		}
+		bodyContent.appendChild(bodyTR);
+		wrapper.appendChild(bodyContent);
 
-		wrapper.appendChild(eventsRow);
 		return wrapper;
 
 	},
 
-	/* createEventList(url)
+	/* addCalendar(url)
 	 * Requests node helper to add calendar url.
 	 *
 	 * argument url sting - Url to add.
