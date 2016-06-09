@@ -25,7 +25,6 @@ Module.register("gcalendar",{
 		},
 },
 
-
 	// Define required scripts.
 	getScripts: function() {
 		return ["moment.js"];
@@ -70,7 +69,7 @@ Module.register("gcalendar",{
 
 		this.updateDom(this.config.animationSpeed);
 	},
-	
+
 	// Override dom generator.
 	getDom: function() {
 
@@ -90,9 +89,10 @@ Module.register("gcalendar",{
 			var headerTH = document.createElement("th");
 			headerTH.className = 'weekly-cal-th';
 			headerTH.scope = 'col';
+
 			headerTH.innerHTML = moment().add(day, "days").format("ddd");
 			headerTR.appendChild(headerTH);
-			
+
 			// This initializes the sub-array for this day witin the main weeksEvents[] array.
 			weeksEvents[moment().add(day, "days").weekday()] = [];
 		}
@@ -113,7 +113,7 @@ Module.register("gcalendar",{
 		var footerTD = document.createElement("td");
 		footerTD.colSpan ="7";
 		footerTD.innerHTML = "&nbsp;";
-		
+
 		footerTR.appendChild(footerTD);
 		footer.appendChild(footerTR);
 		wrapper.appendChild(footer);
@@ -123,7 +123,7 @@ Module.register("gcalendar",{
 		bodyTR.className = 'weekly-events-row';
 
 		for (day = 0; day <= 6; day++) {
-			var dayEvents = weeksEvents[moment().add(day, "days").weekday()];
+			var dayEvents = this.sortByKey(weeksEvents[moment().add(day, "days").weekday()], "title");
 			var bodyTD = document.createElement("td");
 			bodyTD.className = 'dailyEvents';
 			if (dayEvents.length > 0) {
@@ -138,6 +138,17 @@ Module.register("gcalendar",{
 
 		return wrapper;
 
+	},
+
+	/* sortByKey(array, key)
+	 * I love alphabetical sorting!
+	 */
+	sortByKey: function(array, key) {
+		return array.sort(function(a, b) {
+			var x = a[key].toLowerCase();
+			var y = b[key].toLowerCase();
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		});
 	},
 
 	/* addCalendar(url)
@@ -186,7 +197,7 @@ Module.register("gcalendar",{
 				var event = calendar[e];
 				event.url = c;
 				event.today = event.startDate >= today && event.startDate < (today + 24 * 60 * 60 * 1000);
-				if (event.startDate <= today + 7 * 24 * 60 * 60 * 1000) {
+				if (event.startDate < today + 7 * 24 * 60 * 60 * 1000) {
 					events.push(event);
 				}
 			}
