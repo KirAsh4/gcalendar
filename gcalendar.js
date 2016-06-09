@@ -9,8 +9,10 @@ Module.register("gcalendar",{
 
 	// Module config defaults.
 	defaults: {
-		maximumEntries: 10, // Total Maximum Entries
-		maximumNumberOfDays: 365,
+		maximumEntries: 50, // Total Maximum Entries per week
+		maximumNumberOfDays: 7,
+		displaySymbol: true,
+		defaultSymbol: "calendar",
 		fetchInterval: 5 * 60 * 1000,
 		updateInterval: 10 * 60 * 1000,
 		fadeSpeed: 4000,
@@ -82,6 +84,7 @@ Module.register("gcalendar",{
 		wrapper.className = 'xsmall';
 		wrapper.id = 'weekly-cal-table';
 
+		// Create THEAD section with day names
 		var header = document.createElement("tHead");
 		var headerTR = document.createElement("tr");
 
@@ -90,7 +93,13 @@ Module.register("gcalendar",{
 			headerTH.className = 'weekly-cal-th';
 			headerTH.scope = 'col';
 
-			headerTH.innerHTML = moment().add(day, "days").format("ddd");
+			if (day == 0) {
+				headerTH.innerHTML = this.translate("TODAY");
+			} else if (day == 1) {
+				headerTH.innerHTML = this.translate("TOMORROW");
+			} else {
+				headerTH.innerHTML = moment().add(day, "days").format("dddd");
+			}
 			headerTR.appendChild(headerTH);
 
 			// This initializes the sub-array for this day witin the main weeksEvents[] array.
@@ -106,6 +115,7 @@ Module.register("gcalendar",{
 			weeksEvents[eventDate].push(event);
 		}
 
+		// Create TFOOT section -- currently unused
 		var footer = document.createElement('tFoot');
 		var footerTR = document.createElement("tr");
 		footerTR.id = "weekly-cal-tf";
@@ -118,17 +128,31 @@ Module.register("gcalendar",{
 		footer.appendChild(footerTR);
 		wrapper.appendChild(footer);
 
+		// Create TBODY section
 		var bodyContent = document.createElement('tBody');
 		var bodyTR = document.createElement("tr");
 		bodyTR.className = 'weekly-events-row';
 
+		// Fill in events for their respective days
 		for (day = 0; day <= 6; day++) {
 			var dayEvents = this.sortByKey(weeksEvents[moment().add(day, "days").weekday()], "title");
 			var bodyTD = document.createElement("td");
 			bodyTD.className = 'dailyEvents';
 			if (dayEvents.length > 0) {
 				for (var e in dayEvents) {
-					bodyTD.innerHTML += this.titleTransform(dayEvents[e].title) + '<br />';
+					var eventWrapper = document.createElement("div");
+					eventWrapper.className = "eventWrapper";
+					eventWrapper.style.width = "100%";
+					if (this.config.displaySymbol) {
+						var symbol = document.createElement("div");
+						symbol.className = "fa fa-" + this.symbolForUrl(dayEvents[e].url);
+						eventWrapper.appendChild(symbol);
+					}
+					var eventContent = document.createElement("div");
+					eventContent.className = "eventContent";
+					eventContent.innerHTML = this.titleTransform(dayEvents[e].title);
+					eventWrapper.appendChild(eventContent);
+					bodyTD.appendChild(eventWrapper);
 				}
 			}
 			bodyTR.appendChild(bodyTD);
@@ -246,4 +270,21 @@ Module.register("gcalendar",{
 		return string;
 	},
 
+	/* symbolForUrl(url)
+	 * Retrieves the symbol for a specific url.
+	 *
+	 * argument url sting - Url to look for.
+	 *
+	 * return string - The Symbol
+	 */
+	symbolForUrl: function(url) {
+		for (var c in this.config.calendars) {
+			var calendar = this.config.calendars[c];
+			if (calendar.url === url && typeof calendar.symbol === "string")  {
+				return calendar.symbol;
+			}
+		}
+
+		return this.config.defaultSymbol;
+	},
 });

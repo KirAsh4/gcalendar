@@ -1,13 +1,29 @@
 .weekly-cal-th {
-	font-size: medium;
 	border: 1px solid #444444;
 	width: 14.2%;
+	font-weight: normal;
 }
 
 .dailyEvents {
 	border: 1px solid #444444;
-	font-size: medium;
 	vertical-align: top;
-	text-align: left;
 	padding: 5px;
+}
+
+.eventWrapper {
+	display: table;
+	text-align: left;
+	font-size: 14px;
+}
+
+/*
+.fa {
+	padding-right: 5px;
+}
+*/
+
+.eventContent {
+	display: table-cell;
+	width: 100%;
+	padding-left: 5px;
 }
