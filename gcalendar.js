@@ -32,7 +32,7 @@ Module.register("gcalendar",{
 		return ["moment.js"];
 	},
 
-	// Define required scripts.
+	// Define required CSS.
 	getStyles: function() {
 		return ["gcalendar.css", "font-awesome.css"];
 	},
@@ -158,8 +158,103 @@ Module.register("gcalendar",{
 			bodyTR.appendChild(bodyTD);
 		}
 		bodyContent.appendChild(bodyTR);
-		wrapper.appendChild(bodyContent);
 
+		// Create Upper Hourly section (day names, whole day events, multi day events)
+		var gridContainer = document.createElement("div");
+		gridContainer.id = "gridcontainer";
+		
+		var topContainer = document.createElement("div");
+		topContainer.id = "topcontainer";
+		gridContainer.appendChild(topContainer);
+
+		var weekTop = document.createElement("table");
+		weekTop.className = "weektop";
+		weekTop.cellPadding = "0px";
+		weekTop.cellSpacing = "0px";
+
+		var weekTopContent = document.createElement("tbody");
+		var weekTopContentTR = document.createElement("tr");
+		weekTopContentTR.className = "dayNames";
+
+		var weekTopContentCorner = document.createElement("td");
+		weekTopContentCorner.className = "wkCorner";
+		weekTopContentTR.appendChild(weekTopContentCorner);
+
+		for (day = 0; day <= 6; day++) {
+			var weekTopContentTH = document.createElement("th");
+			weekTopContentTH.scope = "col";
+
+			var dayNameDiv = document.createElement("div");
+			dayNameDiv.className = "dayNameDiv";
+
+			var dayNameSpan = document.createElement("span");
+			dayNameSpan.className = "dayNameSpan";
+			if (day == 0) {
+				dayNameSpan.innerHTML = this.translate("TODAY");
+			} else if (day == 1) {
+				dayNameSpan.innerHTML = this.translate("TOMORROW");
+			} else {
+				dayNameSpan.innerHTML = moment().add(day, "days").format("dddd");
+			}
+
+			dayNameDiv.appendChild(dayNameSpan);
+			weekTopContentTH.appendChild(dayNameDiv);
+			weekTopContentTR.appendChild(weekTopContentTH);
+		}
+
+		weekTopContent.appendChild(weekTopContentTR);
+		weekTop.appendChild(weekTopContent);
+		topContainer.appendChild(weekTop);
+		//bodyContent.appendChild(topContainer);
+
+		// Create Hourly display
+		var timedEvents = document.createElement("div");
+		timedEvents.className = "timedEvents";
+		timedEvents.id = "timedEventsWk"
+
+		var timedEventsMainWrapper = document.createElement("div");
+		timedEventsMainWrapper.className = "timedMainWrapper";
+
+		var timedEventsTable = document.createElement("table");
+		timedEventsTable.className = "timedEventsTable";
+		timedEventsTable.id = "timedEventsTable";
+
+		var timedEventsTBody = document.createElement("tBody");
+		var timedEventsTR = document.createElement("tr");
+		timedEventsTR.style.height = "1px";
+
+		var timedEventsTD = document.createElement("td");
+		timedEventsTD.style.width = "60px";
+		timedEventsTR.appendChild(timedEventsTD);
+
+		var timedEventsTD = document.createElement("td");
+		timedEventsTD.colspan = "7";
+		var spanWrapper = document.createElement("div");
+		spanWrapper.className = "spanWrapper";
+		var hourMarkers = document.createElement("div");
+		hourMarkers.className = "hourMarkers";
+		for (hour = 0; hour <= 23; hour++) {
+			var markerCell = document.createElement("div");
+			markerCell.className = "markerCell";
+
+			var dualMarker = document.createElement("div");
+			dualMarker.className = "dualMarker";
+
+			markerCell.appendChild(dualMarker);
+			hourMarkers.appendChild(markerCell);
+		}
+
+		spanWrapper.appendChild(hourMarkers);
+		timedEventsTD.appendChild(spanWrapper);
+		timedEventsTR.appendChild(timedEventsTD);
+		timedEventsTBody.appendChild(timedEventsTR);
+		timedEventsTable.appendChild(timedEventsTBody);
+		timedEventsMainWrapper.appendChild(timedEventsTable);
+		timedEvents.appendChild(timedEventsMainWrapper);
+
+		//bodyContent.appendChild(timedEvents);
+
+		wrapper.appendChild(bodyContent);
 		return wrapper;
 
 	},

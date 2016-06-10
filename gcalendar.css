@@ -1,3 +1,52 @@
+.dualMarker {
+	height: 20px;
+	margin-bottom: 20px;
+	border-bottom: 1px dotted #ddd;
+	border-top: 1px solid #ddd;
+	font-size: 1px;
+}
+
+.markerCell {
+	height: 42px;
+}
+
+.hourMarkers {
+	position: absolute;
+	width: 100%;
+}
+
+.spanWrapper {
+	margin: 1px 0 0 1px;
+	position: relative;
+}
+
+.timesEventsTable {
+	height: 1010px;
+	margin-top: -2px;
+	border-bottom: 1px solid #ddd;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.timedMainWrapper {
+	margin-top: 0px;
+	position: relative;
+}
+
+.timedEvents {
+	height: 232px;
+	font-size: 12px;
+	direction: ltr;
+	border-bottom: 1px solid #ddd;
+	border-left: 0 none;
+	border-top: 1px solid #ddd;
+	line-height: normal;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 0;
+	position: relative;
+}
+
 .weekly-cal-th {
 	border: 1px solid #444444;
 	width: 14.2%;
