@@ -1,40 +1,41 @@
-.dualMarker {
-	height: 20px;
-	margin-bottom: 20px;
-	border-bottom: 1px dotted #ddd;
-	border-top: 1px solid #ddd;
-	font-size: 1px;
-}
-
-.markerCell {
-	height: 42px;
-}
-
-.hourMarkers {
-	position: absolute;
-	width: 100%;
-}
-
-.spanWrapper {
-	margin: 1px 0 0 1px;
+#gridContainer {
+	margin-right: 30px;
+	background: #000 none repeat scroll 0 0;
 	position: relative;
 }
 
-.timesEventsTable {
-	height: 1010px;
-	margin-top: -2px;
-	border-bottom: 1px solid #ddd;
+.weektop {
+	font-size: 11px;
+	line-height: 14px;
+	overflow: hidden;
 	table-layout: fixed;
 	width: 100%;
 }
 
-.timedMainWrapper {
-	margin-top: 0px;
-	position: relative;
+.wkCorner {
+	overflow: hidden;
+	padding-bottom: 6px;
+	text-align: center;
+	vertical-align: bottom;
+	width: 60px;
+}
+
+.dayNameDiv = {
+	border-top: 1px solid #fff;
+	font-size: 12px;
+	padding: 4px;
+	color: #555;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.dummyth {
+	padding: 0px;
+	vertical-align: top;
 }
 
 .timedEvents {
-	height: 232px;
+	height: 300px;
 	font-size: 12px;
 	direction: ltr;
 	border-bottom: 1px solid #ddd;
@@ -47,6 +48,81 @@
 	position: relative;
 }
 
+.timedMainWrapper {
+	margin-top: 0px;
+	position: relative;
+}
+
+.timedEventsTable {
+	height: 1010px;
+	margin-top: -2px;
+	border-bottom: 1px solid #ddd;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.spanWrapper {
+	margin: 1px 0 0 1px;
+	position: relative;
+}
+
+.extraSpanWrapper {
+	line-height: 0;
+	margin: 0 10px 0 1px;
+	z-index: 1;
+}
+
+.hourMarkers {
+	position: absolute;
+	width: 100%;
+}
+
+.markerCell {
+	height: 42px;
+}
+
+.dualMarker {
+	height: 20px;
+	margin-bottom: 20px;
+	border-bottom: 1px dotted #ddd;
+	border-top: 1px solid #666;
+	font-size: 1px;
+}
+
+/* Individual columns */
+.hourLabels {
+	border-left: 1px solid #ddd;
+	color: #666;
+	text-align: right;
+	vertical-align: top;
+	padding: 1px 2px 0 0;
+}
+
+.dailyColumn {
+	border-left: 1px solid #ddd;
+	vertical-align: top;
+}
+
+.lastColumn {
+	border-right: 1px solid #ddd;
+}
+
+.columnWrapper {
+	position: relative;
+}
+
+.gutter {
+	height: 0;
+	margin-right: 10px;
+	position: relative;
+}
+
+.columnOverlayWrapper {
+	height: 0;
+	position: relative;
+}
+
+/* Old style */
 .weekly-cal-th {
 	border: 1px solid #444444;
 	width: 14.2%;
@@ -64,12 +140,6 @@
 	text-align: left;
 	font-size: 14px;
 }
-
-/*
-.fa {
-	padding-right: 5px;
-}
-*/
 
 .eventContent {
 	display: table-cell;
