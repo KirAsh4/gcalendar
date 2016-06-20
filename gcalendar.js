@@ -80,11 +80,9 @@ Module.register("gcalendar",{
 		//console.log("Incoming events!");
 		//console.dir(events);
 
-		var wrapper = document.createElement("div");
-
-		var weeklyCalendarTable = document.createElement("table");
-		weeklyCalendarTable.className = 'xsmall';
-		weeklyCalendarTable.id = 'weekly-cal-table';
+		var wrapper = document.createElement("table");
+		wrapper.className = 'xsmall';
+		wrapper.id = 'weekly-cal-table';
 
 		// Create THEAD section with day names
 		var header = document.createElement("tHead");
@@ -108,7 +106,7 @@ Module.register("gcalendar",{
 			weeksEvents[moment().add(day, "days").weekday()] = [];
 		}
 		header.appendChild(headerTR);
-		weeklyCalendarTable.appendChild(header);
+		wrapper.appendChild(header);
 
 		// Parse all events into weeksEvents[] array
 		for (var e in events) {
@@ -128,7 +126,7 @@ Module.register("gcalendar",{
 
 		footerTR.appendChild(footerTD);
 		footer.appendChild(footerTR);
-		weeklyCalendarTable.appendChild(footer);
+		wrapper.appendChild(footer);
 
 		// Create TBODY section
 		var bodyContent = document.createElement('tBody');
@@ -160,33 +158,26 @@ Module.register("gcalendar",{
 			bodyTR.appendChild(bodyTD);
 		}
 		bodyContent.appendChild(bodyTR);
-		weeklyCalendarTable.appendChild(bodyContent);
-
-		// GCalendar Section
 
 		// Create Upper Hourly section (day names, whole day events, multi day events)
-		var bodyContent = document.createElement("table");
-		bodyContent.className = 'xsmall';
-
 		var gridContainer = document.createElement("div");
-		gridContainer.id = "gridcontainer"; //gridcontainer
-		gridContainer.style.height = "250px";
+		gridContainer.id = "gridcontainer";
 		
 		var topContainer = document.createElement("div");
-		topContainer.id = "topcontainer"; //topcontainerwk
+		topContainer.id = "topcontainer";
 		gridContainer.appendChild(topContainer);
 
 		var weekTop = document.createElement("table");
-		weekTop.className = "weektop"; //wk-weektop wk-full-mode
+		weekTop.className = "weektop";
 		weekTop.cellPadding = "0px";
 		weekTop.cellSpacing = "0px";
 
 		var weekTopContent = document.createElement("tbody");
 		var weekTopContentTR = document.createElement("tr");
-		weekTopContentTR.className = "dayNames"; //wk-daynames
+		weekTopContentTR.className = "dayNames";
 
 		var weekTopContentCorner = document.createElement("td");
-		weekTopContentCorner.className = "wkCorner"; //wk-tzlabel
+		weekTopContentCorner.className = "wkCorner";
 		weekTopContentTR.appendChild(weekTopContentCorner);
 
 		for (day = 0; day <= 6; day++) {
@@ -194,7 +185,7 @@ Module.register("gcalendar",{
 			weekTopContentTH.scope = "col";
 
 			var dayNameDiv = document.createElement("div");
-			dayNameDiv.className = "dayNameDiv"; //wk-dayname
+			dayNameDiv.className = "dayNameDiv";
 
 			var dayNameSpan = document.createElement("span");
 			dayNameSpan.className = "dayNameSpan";
@@ -211,30 +202,22 @@ Module.register("gcalendar",{
 			weekTopContentTR.appendChild(weekTopContentTH);
 		}
 
-		var dummyTH = document.createElement("th");
-		dummyTH.className = "dummyth";
-		dummyTH.style.width = "16px"
-		dummyTH.rowspan = "3";
-		//weekTopContentTR.appendChild(dummyTH);
-
 		weekTopContent.appendChild(weekTopContentTR);
 		weekTop.appendChild(weekTopContent);
 		topContainer.appendChild(weekTop);
-		bodyContent.appendChild(topContainer);
+		//bodyContent.appendChild(topContainer);
 
 		// Create Hourly display
 		var timedEvents = document.createElement("div");
-		timedEvents.className = "timedEvents"; //wk-scrolltimedevents
-		timedEvents.id = "timedEventsWk" //scrolltimedeventswk
+		timedEvents.className = "timedEvents";
+		timedEvents.id = "timedEventsWk"
 
 		var timedEventsMainWrapper = document.createElement("div");
-		timedEventsMainWrapper.className = "timedMainWrapper"; //tg-mainwrapper
+		timedEventsMainWrapper.className = "timedMainWrapper";
 
 		var timedEventsTable = document.createElement("table");
-		timedEventsTable.className = "timedEventsTable"; //tg-timedevents
-		timedEventsTable.id = "timedEventsTable"; //tgTable
-		timedEventsTable.cellSpacing = "0px";
-		timedEventsTable.cellPadding = "0px";
+		timedEventsTable.className = "timedEventsTable";
+		timedEventsTable.id = "timedEventsTable";
 
 		var timedEventsTBody = document.createElement("tBody");
 		var timedEventsTR = document.createElement("tr");
@@ -245,17 +228,17 @@ Module.register("gcalendar",{
 		timedEventsTR.appendChild(timedEventsTD);
 
 		var timedEventsTD = document.createElement("td");
-		timedEventsTD.colSpan = "7";
+		timedEventsTD.colspan = "7";
 		var spanWrapper = document.createElement("div");
-		spanWrapper.className = "spanWrapper"; //tg-spanningwrapper
+		spanWrapper.className = "spanWrapper";
 		var hourMarkers = document.createElement("div");
-		hourMarkers.className = "hourMarkers"; //tg-hourmarkers
+		hourMarkers.className = "hourMarkers";
 		for (hour = 0; hour <= 23; hour++) {
 			var markerCell = document.createElement("div");
-			markerCell.className = "markerCell"; //tg-markercell
+			markerCell.className = "markerCell";
 
 			var dualMarker = document.createElement("div");
-			dualMarker.className = "dualMarker"; //tg-dualmarker
+			dualMarker.className = "dualMarker";
 
 			markerCell.appendChild(dualMarker);
 			hourMarkers.appendChild(markerCell);
@@ -263,71 +246,15 @@ Module.register("gcalendar",{
 
 		spanWrapper.appendChild(hourMarkers);
 		timedEventsTD.appendChild(spanWrapper);
-
-		var extraSpanWrapper = document.createElement("div");
-		extraSpanWrapper.className = "spanWrapper extraSpanWrapper";
-
-		timedEventsTD.appendChild(extraSpanWrapper);
 		timedEventsTR.appendChild(timedEventsTD);
-
 		timedEventsTBody.appendChild(timedEventsTR);
-		timedEventsTable.appendChild(timedEventsTBody);
-
-		calendarColumns = document.createElement("tr");
-
-		hourLabels = document.createElement("td");
-		hourLabels.className = "hourLabels"; //tg-times-pri
-
-		for (hour = 0; hour <= 23; hour++) {
-			var hourDiv = document.createElement("div");
-			hourDiv.style.height = "42px";
-			var hourLabel = document.createElement("div");
-			hourLabel.className = "hourLabels";
-			hourLabel.style.height = "42px";
-			hourLabel.innerHTML = moment().startOf('day').add(hour, "hours").format("h:mm a");
-			hourDiv.appendChild(hourLabel);
-			hourLabels.appendChild(hourDiv);
-		}
-
-		calendarColumns.appendChild(hourLabels);
-
-		for (column = 0; column <= 6; column++) {
-			var dailyColumn = document.createElement("td");
-			if (column == 6) {
-				dailyColumn.className = "dailyColumn lastColumn"; //tg-col
-			} else {
-				dailyColumn.className = "dailyColumn"; //tg-col
-			}
-
-			var dayColumn = document.createElement("div");
-			dayColumn.id = "column" + column; //tgcol#
-			dayColumn.className = "columnWrapper"; //tg-col-eventwrapper
-			dayColumn.style.height = "1008px";
-			dayColumn.style.marginBottom = "-1008px";
-
-			var gutter = document.createElement("div");
-			gutter.className = "gutter"; //tg-gutter
-
-			dayColumn.appendChild(gutter);
-			dailyColumn.appendChild(dayColumn);
-
-			var columnOverlay = document.createElement("div");
-			columnOverlay.id = "columnoverlay" + column; //tgover#
-			columnOverlay.className = "columnOverlayWrapper"; //tg-col-overlaywrapper
-
-			dailyColumn.appendChild(columnOverlay);
-			calendarColumns.appendChild(dailyColumn);
-		}
-
-		timedEventsTBody.appendChild(calendarColumns);
 		timedEventsTable.appendChild(timedEventsTBody);
 		timedEventsMainWrapper.appendChild(timedEventsTable);
 		timedEvents.appendChild(timedEventsMainWrapper);
 
-		bodyContent.appendChild(timedEvents);
+		//bodyContent.appendChild(timedEvents);
 
 		wrapper.appendChild(bodyContent);
-		//wrapper.appendChild(weeklyCalendarTable);
 		return wrapper;
 
 	},
